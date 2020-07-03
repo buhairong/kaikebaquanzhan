@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './plugins/element.js'
-import create from '@/utils/create'
-import Notice from '@/components/Notice.vue';
+//import create from '@/utils/create'
+//import Notice from '@/components/Notice.vue';
+
+import notice from '@/utils/create1'
 
 // import router from './router'
 import router from './krouter'
@@ -14,9 +16,11 @@ Vue.config.productionTip = false
 // 事件总线
 Vue.prototype.$bus = new Vue()
 
-Vue.prototype.$notice = function(props) {
-  return create(Notice, props)
-}
+// Vue.prototype.$notice = function(props) {
+//   return create(Notice, props)
+// }
+
+Vue.prototype.$notice = notice
 
 // new Vue是根实例
 // App是根组件

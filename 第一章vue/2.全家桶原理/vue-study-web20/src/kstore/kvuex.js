@@ -23,6 +23,21 @@ class Store {
     this.dispatch = function boundDispatch(type, payload) {
       dispatch.call(store, type, payload)
     }
+  
+
+    /* 以下是作业内容 天王盖地虎 */
+    this.getters = {...options.getters}
+    this.getterKeys = Object.keys(this.getters)
+
+    // 遍历用户传入的getters的所有的key, 动态赋值，其值应该是函数执行结果
+    // this.getters.doubleCounter = options.getters.doubleCounter(store.state)
+    this.getterKeys.forEach(key => {
+      Object.defineProperty(this.getters, key, {
+        get() {
+          return options.getters[key](store.state)
+        }
+      })
+    })
   }
 
   // 存取器使之成为只读

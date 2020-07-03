@@ -19,7 +19,9 @@ class VueRouter {
     Vue.util.defineReactive(this, 'current', '/')
 
     // 监听hashchange时间
-    window.addEventListener('hashchange', this.onHashChange.bind(this))
+    //window.addEventListener('hashchange', this.onHashChange.bind(this))
+
+    window.addEventListener('popstate', this.onUrlChange.bind(this))
   }
 
   onHashChange() {
@@ -28,6 +30,12 @@ class VueRouter {
     console.log(this.current);
 
   }
+
+  onUrlChange() {
+    // 修改当前url, hash的格式#/xxx
+    this.current = window.location.hash.slice(1)
+    console.log(this.current);
+    window.history.pushState("", "", this.current)  }
 }
 
 // 实现install方法

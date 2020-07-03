@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Tree from "@/components/recursion/Tree.vue";
+import Tree from "@/components/recursion/Tree1.vue";
 export default {
   data() {
     return {
