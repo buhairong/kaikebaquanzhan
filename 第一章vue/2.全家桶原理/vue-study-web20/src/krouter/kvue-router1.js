@@ -44,6 +44,7 @@ VueRouter.install = function(_Vue) {
     Vue.mixin({
         beforeCreate() {
             if(this.options.router) {
+                console.log(Vue)
                 Vue.prototype.$router = this.options.router
             }            
         }
@@ -51,10 +52,31 @@ VueRouter.install = function(_Vue) {
 
     // 注册 router-link 组件
     Vue.component('router-link', {
-
+        props: {
+            to: {
+                type: String,
+                default: ''
+            }
+        },
+        render(h) {
+            return h(
+                'a',
+                {
+                    attrs: {
+                        href: '#' + this.to
+                    }
+                },
+                this.$slots.default
+            )
+        }
     })
 
     // 注册 router-view 组件
+    Vue.component('router-view', {
+        render(h) {
+            return h('div', null, 'view')
+        }
+    })
 }
 
 export default VueRouter
