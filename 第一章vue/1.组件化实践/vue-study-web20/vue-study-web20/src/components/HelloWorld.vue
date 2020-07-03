@@ -3,6 +3,8 @@
     <h1>{{ msg }}</h1>
     <!-- 组件通信 -->
     <!-- <Communication></Communication> -->
+    <!-- 自定义BUS事件 -->
+    <!-- <Bus></Bus> -->
     <!-- 表单 -->
     <FormExample></FormExample>
     <!-- 插槽 -->
@@ -18,6 +20,7 @@ import Communication from '@/components/communication';
 import FormExample from '@/components/form';
 import SlotExample from '@/components/slots';
 import TreeExample from '@/components/recursion';
+import Bus from '@/components/bus';
 
 export default {
   name: 'HelloWorld',
@@ -28,7 +31,8 @@ export default {
     Communication,
     FormExample,
     SlotExample,
-    TreeExample
+    TreeExample,
+    Bus
   },
 }
 </script>
