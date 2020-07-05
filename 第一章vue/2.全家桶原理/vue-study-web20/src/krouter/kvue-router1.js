@@ -3,22 +3,29 @@ let Vue
 class VueRouter {
     constructor(options) {
         this.options = options
-        this.routeMap = {}
-
         // 获取路由模式是 hash 还是 histroy  默认 hash
         let mode = this.options.mode || 'hash'
 
-        this.options.routes.forEach(route => {
-            this.routeMap[route.path] = route
-        })
+        // 创建一个路由映射表
+        // this.routeMap = {}
+        // this.options.routes.forEach(route => {
+        //     this.routeMap[route.path] = route
+        // })
 
         // 监听路由变化并响应
-        const initial = window.location.hash.slice(1) || '/'
-        Vue.util.defineReactive(this, 'current', initial)
+        // const initial = window.location.hash.slice(1) || '/'
+        // Vue.util.defineReactive(this, 'current', initial)
+
+        this.current = window.location.hash.slice(1) || '/'
+        Vue.util.defineReactive(this, 'matched', [])
+        // match 方法可以递归遍历路由表， 获得匹配关系数组
+        this.match()
+
 
         if(mode === 'hash') {
             // 当路由模式为 hash 时，监听地址栏 hash 值变化
             window.addEventListener('hashchange', this.onHashChange.bind(this))
+            window.addEventListener('load', this.onHashChange.bind(this))
        }else if(mode === 'history') {
             // 当路由模式为 histroy 时，监听地址栏 histroy 值变化
             window.addEventListener('popstate', this.onHistoryChange.bind(this))
@@ -29,6 +36,8 @@ class VueRouter {
     // hash 发生改变时
     onHashChange() {
         this.current = window.location.hash.slice(1) || '/'
+        this.matched = []
+        this.match()
     }
 
     // history 发生改变时
@@ -36,6 +45,28 @@ class VueRouter {
         console.log('onHistoryChange', this.current)
         this.current = window.location.hash.slice(1)
         window.history.pushState("", "", this.current)
+    }
+
+    match(routes) {
+        routes= routes || this.options.routes
+
+        // 递归遍历
+        for(const route of routes) {
+            if(route.path === '/' && this.current === '/') {
+                this.matched.push(route)
+                return
+            }
+
+            // /about/info
+            if(route.path !== '/' && this.current.indexOf(route.path) !== -1) {
+                this.matched.push(route)
+                console.log('children', route.children)
+                if(route.children) {
+                    this.match(route.children)
+                }
+                return
+            }
+        }
     }
 }
 
@@ -93,13 +124,20 @@ VueRouter.install = function(_Vue) {
                     depth++
                 }
 
-                parent = this.$parent
+                parent = parent.$parent
             }
-            depth
 
+            //const {routeMap, current} = this.$router
+            //const component = routeMap[current] ? routeMap[current].component : null
 
-            const {routeMap, current} = this.$router
-            const component = routeMap[current] ? routeMap[current].component : null
+            console.log('depth', depth)
+            console.log('matched', this.$router.matched)
+            let component =  null
+            const route = this.$router.matched[depth]
+            if(route) {
+                component = route.component
+            }
+
             return h(component)
         }
     })

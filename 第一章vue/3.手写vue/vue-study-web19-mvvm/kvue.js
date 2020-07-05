@@ -142,6 +142,12 @@ class Compiler {
         this[dir] && this[dir](node, exp)
       }
       // 事件处理
+      /* 以下部分为作业内容  冬瓜冬瓜我是西瓜 */
+      if(attrName.startsWith('@')) {
+          const dir = attrName.substring(1)
+          let fn = this.$vm.$options.methods && this.$vm.$options.methods[exp]
+          node.addEventListener(dir, fn.bind(this.$vm), false)
+      }
     })
   }
 
