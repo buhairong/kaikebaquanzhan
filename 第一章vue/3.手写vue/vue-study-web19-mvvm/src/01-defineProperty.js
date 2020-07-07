@@ -3,10 +3,14 @@ function defineReactive(obj, key, val) {
 
   // 递归处理
   observe(val)
+
+  // 每执行一次defineReactive，就创建一个Dep实例
+  const dep = new Dep()
   
   Object.defineProperty(obj, key, {
     get(){
       console.log('get', key);
+      Dep.target && dep.addDep(Dep.target)
       return val
     },
     set(newVal){
@@ -14,6 +18,9 @@ function defineReactive(obj, key, val) {
         console.log('set', key, newVal);
         observe(newVal)
         val = newVal
+
+        // 通知更新
+        dep.notify()
       }
     },
   })
