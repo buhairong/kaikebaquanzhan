@@ -9,6 +9,7 @@
 <body>
   <div id="app">
     <p @click="add">{{ counter }}</p>
+    <p>{{ arr }}</p>
     <p k-text="counter"></p>
     <p k-html="desc"></p>
     <input type="text" k-model="desc">
@@ -22,7 +23,8 @@
       data: {
         counter: 1,
         counter1: 'abc',
-        desc: 'kvue<span style="color:red">可还行？</span>'
+        desc: 'kvue<span style="color:red">可还行？</span>',
+        arr: ['a', 'b', 'c']
       },
       methods: {
         add() {
@@ -30,9 +32,10 @@
         }
       },
     })
-   setInterval(() => {
-     app.counter++
-   }, 1000);
+  //  setInterval(() => {
+  //    app.counter++
+  //  }, 1000);
+  app.arr.push('d')
     
   </script>
 </body>

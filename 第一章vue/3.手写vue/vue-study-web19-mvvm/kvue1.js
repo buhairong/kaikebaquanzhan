@@ -1,4 +1,19 @@
-// 数据劫持响应
+// 数组响应式
+// 1. 替换数组原型中 7个方法
+const orginalProto = Array.prototype
+// 备份一份 修改备份
+const arrayProto = Object.create(orginalProto);
+['push', 'pop', 'shift', 'unshift', 'splice', 'reverse', 'sort'].forEach(method => {
+    arrayProto[method] = function() {
+        // 原始操作
+        orginalProto[method].apply(this, arguments)
+
+        // 覆盖 通知更新
+        console.log('数组执行'+method+'操作：'+arguments)
+    }
+})
+
+// 数据劫持响应  对象响应式
 function defineReactive(obj, key, val) {
     // 递归，让每一层嵌套对象都做响应处理
     observe(val)
@@ -69,7 +84,17 @@ class Observe {
         this.value = value
 
         // 判断 value 是对象还是数组
-        this.walk(value)
+        if(Array.isArray(value)) {
+            // 覆盖原型，替换7个变更操作
+            value.__proto__ = arrayProto
+
+            // 对数组内部元素执行响应化
+            value.forEach(item => {
+                observe(item)
+            })
+        }else {
+            this.walk(value)
+        }        
     }
 
     walk(obj) {
@@ -135,6 +160,10 @@ class Compiler {
                 const dir = attrName.substring(2)
                 // 执行指令
                 this[dir] && this[dir](node, exp)
+            }else if(attrName.startsWith('@')) { // 判断属性是否为事件
+                const dir = attrName.substring(1)
+                const fn = this.$vm.$options.methods && this.$vm.$options.methods[exp]
+                node.addEventListener(dir, fn.bind(this.$vm), false)
             }
         })
     }
@@ -149,6 +178,17 @@ class Compiler {
     html(node, exp) {
         //node.innerHTML = this.$vm[exp]
         this.update(node, exp, 'html')
+    }
+
+    model(node, exp) {
+        // update 方法只完成赋值和更新
+        this.update(node, exp, 'model')
+
+        // 事件监听
+        node.addEventListener('input', e => {
+            // 新的值赋值给数据即可
+            this.$vm[exp] = e.target.value
+        })
     }
 
     // 所有动态绑定都需要创建更新函数以及对应watcher实例
@@ -170,6 +210,10 @@ class Compiler {
 
     textUpdater(node, value) {
         node.textContent = value
+    }
+
+    modelUpdater(node, value) {
+        node.value = value
     }
 }
 
