@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log('start')
+
+        setTimeout(function(){
+            console.log('settimeout')
+        },0)
+
+        new Promise(res => {
+            console.log('Promise')
+            setTimeout(function(){
+                console.log('settimeout1')
+                res(true)
+            },0)
+            res(true)
+        }).then(res => {
+            console.log('then')
+        })
+
+        console.log('end')
+    </script>
+</body>
+</html>
