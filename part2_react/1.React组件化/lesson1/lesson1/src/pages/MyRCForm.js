@@ -7,16 +7,17 @@ const FormContext = React.createContext();
 
 class createForm extends Component {
   constructor(props) {
+      super(props)
       this.options = {}
   }
 
   getControled = (field, option) => {
     this.options[field] = option
-    return React.cloneElement(InputCmp, {
-      name: field,
-      value: this.state[field] || "",
-      onChange: this.handleChange
-    })
+    // return React.cloneElement(InputCmp, {
+    //   name: field,
+    //   value: this.state[field] || "",
+    //   onChange: this.handleChange
+    // })
   };
 
   setFieldsValue = newStore => {
@@ -52,7 +53,7 @@ class createForm extends Component {
 class MyRCForm extends Component {
   constructor(props) {
     super(props)
-    this.children = props
+    this.children = props.children
   }
 
   componentDidMount() {
