@@ -1,71 +1,34 @@
-// 以下是作业内容： 西撒哈拉
-import React, {Component, useEffect} from "react";
-import {Field} from "../components/my-rc-field-form/";
+import React, {Component} from "react";
+//import {createForm} from "rc-form";
+import createForm from "../components/my-rc-form";
 import Input from "../components/Input";
 
-const FormContext = React.createContext();
-
-class createForm extends Component {
-  constructor(props) {
-      super(props)
-      this.options = {}
-  }
-
-  getControled = (field, option) => {
-    this.options[field] = option
-    // return React.cloneElement(InputCmp, {
-    //   name: field,
-    //   value: this.state[field] || "",
-    //   onChange: this.handleChange
-    // })
-  };
-
-  setFieldsValue = newStore => {
-      this.setState(newStore)
-  }
-
-  getFieldsValue = () => {
-      return this.state
-  }
-
-
-  // 西撒哈拉
-  validateFields = callback => {
-      let err = []
-
-      for(let field in this.options) {
-          if(this.state[field] === undefined) {
-              err.push({
-                  [field]: "err"
-              })
-          }
-      }
-
-      if(err.length === 0) {
-          callback(null, this.state)
-      }else{
-          callback(err, this.state)
-      }
-  }
-}
+const nameRules = {required: true, message: "请输入姓名！"};
+const passworRules = {required: true, message: "请输入密码！"};
 
 @createForm
 class MyRCForm extends Component {
   constructor(props) {
-    super(props)
-    this.children = props.children
+    super(props)   
+    this.state = {
+      msgs: {}
+    } 
   }
 
   componentDidMount() {
     this.props.form.setFieldsValue({username: "default"})
   }
 
-  submit = () => {
+  submit = () => {    
     const {getFieldsValue, validateFields} = this.props.form
+    console.log('submit', getFieldsValue())
 
     validateFields((err, val) => {
       if(err) {
         console.log('err', err)
+        this.setState({
+          msgs: err
+        })
       }else {
         console.log('success', val);
       }
@@ -73,46 +36,22 @@ class MyRCForm extends Component {
   }
 
   render() {
+    console.log('props', this.props)
+    const {getFieldDecorator} = this.props.form
+    const {msgs} = this.state
+    console.log('msgs', msgs)
+    console.log('msgs', msgs["username"])
     return (
-      <form
-          onSubmit={e => {
-              e.preventDefault();
-              this.submit();
-          }}>
-          <FormContext.Provider>
-              {this.children}
-          </FormContext.Provider>
-      </form>
+      <div>
+        <h3>MyRCForm</h3>
+        {getFieldDecorator("username", {rules: [nameRules]})(<Input placeholder="Username" />)}
+        <span>{msgs["username"] && this.msgs["username"][0]}</span>
+        {getFieldDecorator("password", {rules: [passworRules]})(<Input placeholder="Password" />)}
+        <span>{msgs["password"] && this.msgs["password"][0]}</span>
+        <button onClick={this.submit}>submit</button>
+      </div>
     );
   }
 }
 
-const nameRules = {required: true, message: "请输入姓名！"};
-const passworRules = {required: true, message: "请输入密码！"};
-
-export default function MyRCFieldForm(props) {
-  const onFinish = val => {
-    console.log("onFinish", val); //sy-log
-  };
-
-  // 表单校验失败执行
-  const onFinishFailed = val => {
-    console.log("onFinishFailed", val); //sy-log
-  };
-
-  return (
-    <div>
-      <h3>MyRCFieldForm</h3>
-      <MyRCForm onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <Field name="username" rules={[nameRules]}>
-          <Input placeholder="input UR Username" />
-        </Field>
-        <Field name="password" rules={[passworRules]}>
-          <Input placeholder="input UR Password" />
-        </Field>
-        <button>Submit</button>
-      </MyRCForm>
-    </div>
-  );
-}
-
+export default MyRCForm
