@@ -112,7 +112,12 @@ function initProps (vm: Component, propsOptions: Object) {
 
 function initData (vm: Component) {
   let data = vm.$options.data
-  // data类型是函数执行之
+
+  /*
+      先判断 data 的类型
+      如果data类型是 函数，则执行data函数，并将其结果作为data选项的值，
+      否则使用用户设置的 data
+  */
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
@@ -125,7 +130,7 @@ function initData (vm: Component) {
     )
   }
   // proxy data on instance
-  // 校验和代理
+  // 代理这些数据到实例上
   const keys = Object.keys(data)
   const props = vm.$options.props
   const methods = vm.$options.methods
