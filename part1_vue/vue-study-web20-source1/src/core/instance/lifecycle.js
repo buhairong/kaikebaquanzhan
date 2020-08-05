@@ -186,6 +186,7 @@ export function mountComponent (
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
+    // 用户 $mount()时，定义 updateComponent
     updateComponent = () => {
       vm._update(vm._render(), hydrating)
     }
@@ -194,6 +195,13 @@ export function mountComponent (
   // we set this to vm._watcher inside the watcher's constructor
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
+
+  /*
+      一个组件创建一次 Watcher, Wactcher的实例和组件的实例一一对应
+      但是一个组件可能存在多个 data 中的key的使用，
+      在更新时，为了确保知道是哪个 key 发生了变化，只能采用 diff 算法
+      这也是 diff 存在的必要性
+  */
   new Watcher(vm, updateComponent, noop, {
     before () {
       if (vm._isMounted && !vm._isDestroyed) {
