@@ -6,25 +6,26 @@
     <title>Document</title>
 </head>
 <body>
+
+    <div id="test">aa</div>
     <script>
-        console.log('start')
+        // 观察器的配置（需要观察什么变动）
+        const config = { attributes: true, childList: true, subtree: true };
 
-        setTimeout(function(){
-            console.log('settimeout')
-        },0)
-
-        new Promise(res => {
-            console.log('Promise')
-            setTimeout(function(){
-                console.log('settimeout1')
-                res(true)
-            },0)
-            res(true)
-        }).then(res => {
-            console.log('then')
+        // MutationObserver基本用法 
+        const observer = new MutationObserver(function(){   //这里是回调函数 
+            console.log('DOM被修改了！')
         })
+        
+        const article = document.querySelector('#test')
+        observer.observe(article, config) 
 
-        console.log('end')
+        article.innerHTML = 'bb'       
+        article.innerHTML = 'cc'
+
+        setTimeout(function() {
+            article.innerHTML = 'dd'
+        }, 0)       
     </script>
 </body>
 </html>
