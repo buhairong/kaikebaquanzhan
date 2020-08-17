@@ -340,4 +340,40 @@ export function useState(init) {
   return [hook.state, setState];
 }
 
+export function useCallback(init) {
+  // 判断有没有老的hook
+  const oldHook = wipFiber.base && wipFiber.base.hooks[wipFiber.hookIndex];
+
+  // 初次渲染（用init）
+  //  还是更新（在init的基础上更新）
+  const hook = oldHook
+    ? {
+        state: oldHook.state,
+        queue: oldHook.queue
+      }
+    : {state: init, queue: []};
+
+  // 更新hook.state
+  // 这里模拟一下批量更新
+  hook.queue.forEach(action => (hook.state = action));
+
+  const setState = action => {
+    console.log("omg", action); //sy-log
+    // 每次执行setState，接收新的action，这里存到数组，因为等下要批量更新，执行遍历
+    hook.queue.push(action);
+    wipRoot = {
+      node: currentRoot.node,
+      props: currentRoot.props,
+      base: currentRoot
+    };
+    nextUnitOfWork = wipRoot;
+    deletions = [];
+  };
+
+  wipFiber.hooks.push(hook);
+  wipFiber.hookIndex++;
+
+  return [hook.state, setState];
+}
+
 export default {render};
