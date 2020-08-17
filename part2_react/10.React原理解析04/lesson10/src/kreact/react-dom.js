@@ -226,29 +226,26 @@ function placeChild(newFiber, lastPlacedIndex, newIdx, shouldTrackSideEffects) {
   }
 }
 
+// 几内亚
 function reconcileChildren(returnFiber, newChildren) {
   let previousNewFiber = null;
 
-  // oldfiber 的第一个子fiber
   let oldFiber = returnFiber.base && returnFiber.base.child;
-  // 记录上次的插入位置
+  
   let lastPlacedIndex = 0;
-  // 做累加，遍历newChildren数组
+  
   let newIdx = 0;
-  // oldFiber的中转，记录下个oldFiber
+  
   let nextOldFiber = null;
 
   let shouldTrackSideEffects = true;
   if (!oldFiber) {
-    // 初次渲染
+    
     shouldTrackSideEffects = false;
   }
 
-  // 1. 界面更新阶段 相对位置没有发生变化 这行这个循环
+  
   for (; oldFiber !== null && newIdx < newChildren.length; newIdx++) {
-    // 判断相对位置
-    // old 1  2  3_  4
-    // new    1  2  3  4   _
     if (oldFiber.index > newIdx) {
       nextOldFiber = oldFiber;
       oldFiber = null;
@@ -286,14 +283,11 @@ function reconcileChildren(returnFiber, newChildren) {
       previousNewFiber.sibling = newFiber;
     }
     previousNewFiber = newFiber;
-    // !
+    
     oldFiber = nextOldFiber;
   }
 
   if (newIdx === newChildren.length) {
-    // We've reached the end of the new children. We can delete the rest.
-    // deleteRemainingChildren(returnFiber, oldFiber);
-    // return resultingFirstChild;
     while (oldFiber) {
       deletions.push({
         ...oldFiber,
@@ -303,7 +297,6 @@ function reconcileChildren(returnFiber, newChildren) {
     }
   }
 
-  //2.  新增fiber 老链表已经遍历完
   if (oldFiber === null) {
     for (; newIdx < newChildren.length; newIdx++) {
       let newChild = newChildren[newIdx];
