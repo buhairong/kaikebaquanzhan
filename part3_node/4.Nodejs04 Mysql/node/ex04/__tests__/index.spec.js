@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize');
 test('练习04 完成一个一对多查询', async () => {
 
-    const sequelize = new Sequelize({
+    const sequelize = new Sequelize('kaikeba', 'root', 'root', {
         host: 'localhost',
-        dialect: 'sqlite',
-        operatorsAliases: true,
+        dialect: 'mysql',
+        operatorsAliases: false,
         // 关闭执行日志
         logging: false
     });
