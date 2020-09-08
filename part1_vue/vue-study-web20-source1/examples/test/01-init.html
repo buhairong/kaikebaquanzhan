@@ -9,7 +9,7 @@
 <body>
     <div id="demo">
         <h1>初始化流程</h1>
-        <p>{{foo}}</p>        
+        <p>{{num}}</p>        
     </div>
     <script>
         // render > template > el
@@ -19,15 +19,23 @@
             //template: '<div>template</div>',
             // template: '#app',
             //render(h){return h('div','render')},
-            data:{foo:'foo'},
+            data:{num:1},
             mounted() {
-                //this.foo = 'fooooo1'
+                this.num++
                 //this.foo = 'fooooo2'
+            },
+            beforeUpdate() {
+                console.log('beforeUpdate', this.num)
+                this.num++
+            },
+            updated() {
+                console.log('updated', this.num)
+                //this.num++
             }
         })
 
-        console.log('app', app.foo)
-        app.foo = '123'
+       // console.log('app', app.foo)
+       // app.foo = '123'
         
     </script>
 </body>

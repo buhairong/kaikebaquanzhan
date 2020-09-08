@@ -86,3 +86,23 @@ function calc(arr) {
 
 console.log(calc(["4", "13", "5", "/", "+"]))
 console.log(calc(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]))
+
+// 用2个栈实现一个队列
+function StackQueue() {
+    let stack1 = new Stack()
+    let stack2 = new Stack()
+    
+}
+
+var sq = new StackQueue();
+sq.enqueue(1);
+sq.enqueue(4);
+sq.enqueue(8);
+console.log(sq.head());
+sq.dequeue();
+sq.enqueue(9);
+console.log(sq.head());
+sq.dequeue();
+console.log(sq.head());
+console.log(sq.dequeue());
+console.log(sq.dequeue());
