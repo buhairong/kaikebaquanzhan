@@ -165,6 +165,29 @@ function BinaryTree() {
     this.height = function() {
         return tree_height(root)        
     }
+
+    let find_node = function(node, data) {
+        
+        if(node == null) {
+            return null
+        }
+        if(node.data == data) {
+            return node
+        }
+
+        let left_res = find_node(node.leftChild, data)
+        if(left_res) {
+            return left_res
+        }
+
+        return find_node(node.rightChild, data)
+
+    }
+
+    // 查找节点
+    this.find = function(data) {
+        return find_node(root, data)
+    }
 }
 
 
@@ -185,3 +208,5 @@ bt.post_node(root_node)
 
 console.log('节点数量：', bt.size())
 console.log('高度：', bt.height())
+console.log('查找节点：', bt.find('h'))
+
