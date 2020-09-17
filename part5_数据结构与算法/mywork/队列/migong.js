@@ -27,7 +27,7 @@ class findPath {
         this.rowLen = this.maze_array.length
         this.colLen = this.maze_array[0].length
         this.step = 0
-        this.queue[this.step] = [this.startPos]
+        this.queue = [[this.startPos]]
 
         this.createQueue()
         
