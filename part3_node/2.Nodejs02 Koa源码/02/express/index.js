@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 app.listen(3000)
 const mid1 = (req, res, next) => {
-    console.log(1)
+    console.log(1)    
     res.write('a')
     next()
     res.end()
