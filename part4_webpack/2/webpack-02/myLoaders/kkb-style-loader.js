@@ -1,6 +1,7 @@
 module.exports = function (source) {
-  return ` const e = document.createElement('style');
-    e.innerHTML = ${source};
-    document.head.appendChild(e)
-  `;
-};
+  const str = ` const el = document.createElement('style');
+                el.innerHTML = ${source};
+                document.head.appendChild(el);
+              `
+  return str
+}
