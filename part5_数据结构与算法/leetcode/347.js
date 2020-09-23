@@ -5,6 +5,8 @@
 
     输入: nums = [1,1,1,2,2,3], k = 2
     输出: [1,2]
+
+
     示例 2:
 
     输入: nums = [1], k = 1
@@ -49,3 +51,5 @@ var topKFrequent = function(nums, k) {
 
 console.log(topKFrequent([1,1,1,2,2,3], 2))
 console.log(topKFrequent([1], 1))
+
+
