@@ -1,7 +1,8 @@
 class txtwebpackPlugin {
-  //   constructor(options) {
-  //     console.log(options);
-  //   }
+  constructor(options) {
+    console.log(options);
+  }
+
   //如何钩入hooks
   apply(compiler) {
     compiler.hooks.emit.tapAsync("txtwebpackPlugin", (compilation, cb) => {
