@@ -49,7 +49,38 @@ var topKFrequent = function(nums, k) {
     return arr
 };
 
-console.log(topKFrequent([1,1,1,2,2,3], 2))
-console.log(topKFrequent([1], 1))
+//console.log(topKFrequent([1,1,1,2,2,3], 2))
+//console.log(topKFrequent([1], 1))
 
 
+//  最小堆
+var topKFrequent1 = function(nums, k) {
+    let obj = {}
+    let heap = []
+    let res = []
+    nums.forEach(item => {
+        let count = obj[item] ? obj[item] + 1 : 1
+        obj[item] = count
+    })
+
+    
+
+    for (const key in obj) {
+        heap.push({
+            num: parseInt(key),
+            total: obj[key]
+        })           
+    }
+
+    heap.sort((a, b) => b.total - a.total)
+
+    for (let i = 0; i < k; i++) {
+       res.push(heap[i].num)       
+   }
+
+    return res
+};
+
+
+console.log(topKFrequent1([2,3,4,1,4,0,4,-1,-2,-1], 2))
+//console.log(topKFrequent1([1], 1))

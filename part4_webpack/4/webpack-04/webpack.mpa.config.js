@@ -17,11 +17,10 @@ const glob = require("glob");
 //       chunks: ["main"],
 //     }),
 
-
-// 等价交换，炼金术不变的原则
 const setMpa = () => {
   const entry = {};
   const htmlWebpackPlugins = [];
+  //生成entry
   const entryFiles = glob.sync(path.join(__dirname, "./src/*/index.js"));
 
   entryFiles.map((item, index) => {
@@ -39,6 +38,7 @@ const setMpa = () => {
     );
   });
 
+  //
   return {
     entry,
     htmlWebpackPlugins,
