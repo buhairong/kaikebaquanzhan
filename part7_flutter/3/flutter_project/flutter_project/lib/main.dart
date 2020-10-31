@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'WelComePage.dart';
+import 'package:flutter_project/WelComePage.dart';
+import 'package:flutter_project/home.dart';
+import 'package:flutter_project/mine/SecondScreen.dart';
+import 'package:flutter_project/mine/thirdScreen.dart';
 
 void main() {
   runApp(MyApp());
