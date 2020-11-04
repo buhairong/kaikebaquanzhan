@@ -1,4 +1,15 @@
 export default {
+  // router配置
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        path: '/foo',
+        component: resolve(__dirname, 'pages/othername.vue')
+      })
+    },
+    //middleware: ['auth']
+  },
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'nuxt-app',
@@ -19,7 +30,8 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '@/plugins/element-ui'
+    '@/plugins/element-ui',
+    '@/plugins/api-inject',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -36,7 +48,13 @@ export default {
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    proxy: true
+  },
+
+  proxy: {
+    "/api": "http://localhost:8080"
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {

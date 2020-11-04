@@ -33,7 +33,7 @@
 	"cloudfunctionRoot": "cloudfunction/",
 	"compileType": "miniprogram",
 	"libVersion": "2.12.0",
-	"appid": "wx9d8fff4d99ca6c9c",
+	"appid": "wx4a74252abccb50b6",
 	"projectname": "werun-wxcloud",
 	"debugOptions": {
 		"hidedInDevtools": []
