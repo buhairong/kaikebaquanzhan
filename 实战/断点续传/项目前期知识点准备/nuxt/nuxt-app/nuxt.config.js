@@ -32,6 +32,7 @@ export default {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/api-inject',
+    '@/plugins/interceptor',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -45,6 +46,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'cookie-universal-nuxt',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
