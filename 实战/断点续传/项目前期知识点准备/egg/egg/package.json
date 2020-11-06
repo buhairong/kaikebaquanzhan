@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "egg",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -9,13 +9,12 @@
   "dependencies": {
     "egg": "^2.15.1",
     "egg-scripts": "^2.11.0",
-    "husky": "^4.3.0",
-    "svg-captcha": "^1.4.0"
+    "egg-sequelize": "^6.0.0",
+    "mysql2": "^2.2.5"
   },
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.1.0",
-    "cz-conventional-changelog": "^3.3.0",
     "egg-bin": "^4.11.0",
     "egg-ci": "^1.11.0",
     "egg-mock": "^3.21.0",
@@ -25,17 +24,12 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test"
-    }
-  },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-server",
-    "stop": "egg-scripts stop --title=egg-server-server",
+    "start": "egg-scripts start --daemon --title=egg-server-egg",
+    "stop": "egg-scripts stop --title=egg-server-egg",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
-    "test": "npm run lint && npm run test-local",
+    "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint .",
@@ -50,10 +44,5 @@
     "url": ""
   },
   "author": "",
-  "license": "MIT",
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
+  "license": "MIT"
 }
