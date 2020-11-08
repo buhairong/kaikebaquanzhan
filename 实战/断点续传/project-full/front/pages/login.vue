@@ -1,19 +1,19 @@
 <template>
   <div>
     <el-form class="login-form" :rules="rules">
-      <el-form-item props="email">
+      <el-form-item prop="email">
         <span>
           <i class="el-icon-mobile" />
         </span>
         <el-input placeholder="邮箱"></el-input>
       </el-form-item>
-      <el-form-item props="passwd">
+      <el-form-item prop="passwd">
         <span>
           <i class="el-icon-lock" />
         </span>
         <el-input placeholder="密码"></el-input>
       </el-form-item>
-      <el-form-item props="captcha">
+      <el-form-item prop="captcha">
         <el-input placeholder="验证码"></el-input>
         <img :src="captchaUrl" @click="updateCaptcha" >
       </el-form-item>

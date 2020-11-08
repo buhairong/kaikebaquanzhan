@@ -1,0 +1,4 @@
+<!--miniprogram/pages/saveImage/saveImage.wxml-->
+<canvas type="2d" id="myCanvas" style="height:300px;width:300px;"></canvas>
+
+<button type="primary" style="margin-top: 20px;" bindtap="btnSaveImg">保存图片</button>
