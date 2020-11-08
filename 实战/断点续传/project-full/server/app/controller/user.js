@@ -1,3 +1,4 @@
+const md5 = require('md5')
 const BaseController = require('./base')
 
 const createRule = {
@@ -6,6 +7,8 @@ const createRule = {
     passwd: {type: "string"},
     captcha: {type: "string"},
 }
+
+const HashSalt = ":kaikeba@good!@!123"
 
 class UserController extends BaseController {
     async login() {
@@ -29,7 +32,28 @@ class UserController extends BaseController {
             return this.error('验证码错误')
         }
 
-        this.success({name: 'kkb'})
+        // 注册邮箱是否存在
+        if(await this.checkEmail(email)) {
+            return this.error('邮箱重复了')
+        }
+
+        const ret = await ctx.model.User.create({
+            email,
+            nickname,
+            passwd: md5(passwd + HashSalt),
+            captcha
+        })
+
+        if(ret._id) {
+            return this.message('注册成功')
+        }else {
+            return this.error('注册失败')
+        }
+    }
+
+    async checkEmail(email) {
+        const user = await this.ctx.model.User.findOne({email})
+        return user
     }
 
     async verify() {
