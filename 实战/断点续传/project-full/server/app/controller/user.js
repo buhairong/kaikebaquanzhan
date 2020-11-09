@@ -98,6 +98,14 @@ class UserController extends BaseController {
         const {ctx} = this
 
         // 用户ID从token里获取
+        const {email} = ctx.state
+        const user = await this.checkEmail(email)
+
+        if(user) {
+            this.success(user)
+        }else{
+            this.error('用户信息获取失败')
+        }
     }
 }
 

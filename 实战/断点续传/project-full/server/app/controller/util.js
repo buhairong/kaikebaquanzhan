@@ -2,6 +2,7 @@ const svgCaptcha = require('svg-captcha')
 const BaseController = require('./base')
 
 class UtilController extends BaseController {
+  // 生成验证码svg图片
   async captcha() {
     const captcha = svgCaptcha.create({
       size: 4,
@@ -18,6 +19,7 @@ class UtilController extends BaseController {
     this.ctx.body = captcha.data
   }
 
+  // 发送邮箱验证码
   async sendcode() {
     const {ctx} = this
     const email = ctx.query.email
@@ -37,6 +39,12 @@ class UtilController extends BaseController {
     }else{
       this.error('发送失败')
     }
+  }
+
+  // 1. 文件基础上传
+  async uploadfile() {
+    const {ctx} = this
+    const file = request.files[0]
   }
 }
 
