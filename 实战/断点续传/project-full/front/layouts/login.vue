@@ -31,10 +31,15 @@ export default {}
     }
     .captcha-contain {
       width: 340px;
-      position: relative;
+      position: relative; 
+      .el-button {
+          width: 90px;
+          padding: 0;
+          line-height: 40px;
+        }     
       .captcha {
         position: absolute;
-        right: -110px;
+        right: -110px;        
         img {
           width: 90px;
           height: 50px;
