@@ -39,7 +39,7 @@ class UserController extends BaseController {
             _id: user._id,
             email
         }, app.config.jwt.secret, {
-            expiresIn: "5m"
+            expiresIn: "1h"
         })
 
         this.success({
