@@ -1,6 +1,7 @@
 const svgCaptcha = require('svg-captcha')
 const BaseController = require('./base')
 const fse = require('fs-extra')
+const path = require('path')
 
 class UtilController extends BaseController {
   // 生成验证码svg图片
@@ -46,13 +47,23 @@ class UtilController extends BaseController {
   async uploadfile() {
     const {ctx} = this
     const file = ctx.request.files[0]
-    const {name} = ctx.request.body
-    console.log(name, file)
+    const {hash, name} = ctx.request.body
+    
+    const chunkPath = path.resolve(this.config.UPLOAD_DIR, hash)
 
-    await fse.move(file.filepath, this.config.UPLOAD_DIR+"/"+file.filename)
-    this.success({
-      url: `/public/${file.filename}`
-    })
+    // 合并之后，文件最终的存储位置
+    //const filePath = path.resolve(this.config.UPLOAD_DIR, hash)
+
+    if(!fse.existsSync(chunkPath)) {
+      await fse.mkdir(chunkPath)
+    }
+
+    await fse.move(file.filepath, chunkPath+"/"+name)
+
+    this.message('切片上传成功')
+    // this.success({
+    //   url: `/public/${file.filename}`
+    // })
   }
 }
 
