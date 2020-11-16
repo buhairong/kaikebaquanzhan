@@ -43,7 +43,7 @@ class UtilController extends BaseController {
     }
   }
 
-  // 1. 文件基础上传
+  // 1. 文件切片上传
   async uploadfile() {
     const {ctx} = this
     const file = ctx.request.files[0]
@@ -64,6 +64,49 @@ class UtilController extends BaseController {
     // this.success({
     //   url: `/public/${file.filename}`
     // })
+  }
+
+  // 文件上传切片合并
+  async mergefile() {
+    const {ext, size, hash} = this.ctx.request.body
+    const filePath = path.resolve(this.config.UPLOAD_DIR, `${hash}.${ext}`)
+
+    await this.service.tools.mergeFile(filePath, hash, size)
+
+    this.success({
+      url: `/public/${hash}.${ext}`
+    })
+
+  }
+
+  // 检查文件是否上传过
+  async checkfile() {
+    const {ctx} = this
+    const {ext, hash} = ctx.request.body
+    const filePath = path.resolve(this.config.UPLOAD_DIR, `${hash}.${ext}`)
+
+    let uploaded = false
+    let uploadedList = []
+
+    if(fse.existsSync(filePath)){
+      // 文件存在
+      uploaded = true
+    }else {
+      uploadedList = await this.getUploadedList(path.resolve(this.config.UPLOAD_DIR, hash))
+    }
+
+    this.success({
+      uploaded,
+      uploadedList
+    })
+
+  }
+
+  // 查询已上传的文件切片
+  async getUploadedList(driPath) {
+    return fse.existsSync(driPath)
+            ? (await fse.readdir(driPath)).filter(name => name[0] !== '.') //过滤隐藏文件 如：DS_Store
+            : []
   }
 }
 
