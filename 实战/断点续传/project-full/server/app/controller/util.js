@@ -45,6 +45,14 @@ class UtilController extends BaseController {
 
   // 1. 文件切片上传
   async uploadfile() {
+    // 模拟报错
+    // 上传可能报错，报错之后，进度条变红，开始重试
+    // 一个切片重试失败三次，整体全部终止
+    if(Math.random() > 0.3) {
+      return this.ctx.status = 500
+    }
+
+
     const {ctx} = this
     const file = ctx.request.files[0]
     const {hash, name} = ctx.request.body

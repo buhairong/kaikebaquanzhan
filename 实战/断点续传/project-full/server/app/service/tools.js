@@ -60,7 +60,7 @@ class ToolService extends Service {
     await Promise.all(
       files.map((file, index) => {
         pipStream(file, fse.createWriteStream(dest, {
-          start: index*size,
+          start: parseInt(index*size),
           end: (index+1)*size
         }))
       })

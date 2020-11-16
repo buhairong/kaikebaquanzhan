@@ -35,7 +35,8 @@
 
 <script>
 import sparkMD5 from 'spark-md5'
-const CHUNK_SIZE = 2 * 1024 * 1024
+import { log } from 'util'
+const CHUNK_SIZE = 0.1 * 1024 * 1024
 export default {
   data() {
     return {
@@ -271,19 +272,83 @@ export default {
         form.append('hash', chunk.hash)
         form.append('name', chunk.name)
 
-        return {form, index: chunk.index}
-      }).map(({form, index}) => this.$http.post('/uploadfile', form, {
-        onUploadProgress: progress =>{
-          // 不是整体的进度条了，而是每个区块有自己的进度条，整体的进度条需要计算
-          this.chunks[index].progress = Number(((progress.loaded/progress.total)*100).toFixed(2))
-        }
-      }))
+        return {form, index: chunk.index, error: 0}
+      })
+      // .map(({form, index}) => this.$http.post('/uploadfile', form, {
+      //   onUploadProgress: progress =>{
+      //     // 不是整体的进度条了，而是每个区块有自己的进度条，整体的进度条需要计算
+      //     this.chunks[index].progress = Number(((progress.loaded/progress.total)*100).toFixed(2))
+      //   }
+      // }))
 
-      await Promise.all(requests)
+      // 并发数控制
+      // 尝试申请tcp链接过多，也会造成卡顿
+      //await Promise.all(requests)
 
+      await this.sendRequest(requests)
+      console.log('并发结束')
       await this.mergeRequest()
     },
+    async sendRequest(chunks, limit = 3) {
+      // limit是并发数      
+      return new Promise((resolve, reject) => {
+        const len = chunks.length
+        let count = 0
+        let isStop = false
+        const start = async () => {
+          if(isStop) {
+            return
+          }
+          const task = chunks.shift()
+
+          if(task) {
+            const {form, index} = task
+
+            try{
+              await this.$http.post('/uploadfile', form, {
+                onUploadProgress: progress =>{
+                  // 不是整体的进度条了，而是每个区块有自己的进度条，整体的进度条需要计算
+                  this.chunks[index].progress = Number(((progress.loaded/progress.total)*100).toFixed(2))
+                }
+              })
+
+              if(count === len-1) {
+                // 最后一个任务
+                resolve()
+              }else{
+                count++
+                // 启动下一个任务
+                start()
+              }
+            }catch(e) {
+              this.chunks[index].progress = -1
+              if(task.error < 3) {
+                task.error++
+                chunks.unshift(task)
+                start()
+              }else {
+                // 错误三次后，上传终止
+                isStop = true
+                reject()
+              }
+            }
+
+            
+          }
+        }
+
+        while(limit > 0) {
+          // 启动limit个任务
+          start()
+          limit-=1
+        }
+      })
+
+
+      
+    },
     async mergeRequest() {
+      console.log('开始合并')
       this.$http.post('mergefile', {
         ext: this.file.name.split('.').pop(),
         hash: this.hash,
