@@ -24,4 +24,10 @@ module.exports = app => {
     router.post('/login', login)
     router.get('/verify', verify)
   })
+
+  router.group({name: 'article', prefix: '/article'}, router => {
+    const {index} = controller.article
+
+    router.get('/', index)
+  })
 }
