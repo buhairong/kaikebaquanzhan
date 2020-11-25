@@ -15,11 +15,18 @@ export default {
       articles: []
     }
   },
-  async mounted() {
-    let ret = await this.$http.get('/article')
-    if(ret.code == 0) {
-      this.articles = ret.data
+  created() {
+    for (let i = 0; i < 1000; i++) {
+      this.articles.push(i)      
     }
+  },
+  async mounted() {
+    // let ret = await this.$http.get('/article')
+    // if(ret.code == 0) {
+    //   this.articles = ret.data
+    // }
+
+    
   },
   components: {
     VirtualList

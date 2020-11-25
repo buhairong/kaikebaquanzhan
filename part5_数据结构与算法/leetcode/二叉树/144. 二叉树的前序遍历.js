@@ -10,6 +10,7 @@
  * @param {TreeNode} root
  * @return {number[]}
  */
+// 递归
 var preorderTraversal = function(root, arr = []) {
   if(root) {
     arr.push(root.val)
