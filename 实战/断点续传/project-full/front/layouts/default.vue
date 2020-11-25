@@ -112,4 +112,11 @@ html {
   color: #fff;
   background-color: #35495e;
 }
+.kkb-container{
+  width:980px;
+  height:80vh;
+  margin:0 auto;
+  background: #fff;
+  padding:20px;
+}
 </style>

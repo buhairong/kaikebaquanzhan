@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
+  <div class="kkb-container">
     <VirtualList :listData="articles">
-
     </VirtualList>
   </div>
 </template>
@@ -16,8 +15,9 @@ export default {
     }
   },
   created() {
-    for (let i = 0; i < 1000; i++) {
-      this.articles.push(i)      
+    for (let index = 0; index < 500; index++) {
+      this.articles.push('kkb'+index)
+      
     }
   },
   async mounted() {
