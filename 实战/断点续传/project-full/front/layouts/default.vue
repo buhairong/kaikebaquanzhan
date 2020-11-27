@@ -39,7 +39,7 @@
 <script>
 export default {
   mounted() {
-    this.getUserInfo()
+    //this.getUserInfo()
   },
   computed: {
     userInfo() {

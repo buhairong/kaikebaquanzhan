@@ -1,7 +1,7 @@
 <template>
   <div ref="list" class="kkb-list-container" @scroll="scrollEvent($event)">
-    <div class="kkb-list-phantom" :style="{height: listHeight+'px'}">
-    </div>
+    <!-- <div class="kkb-list-phantom" :style="{height: listHeight+'px'}">
+    </div> -->
     <!-- <div class="kkb-list" :style="{top: getTop}"> -->
     <div class="kkb-list" :style="{ transform: getTransform }">
       <div
@@ -11,7 +11,7 @@
         :article="item"
         :style="{height: size+'px'}"
       >
-        <h2 style="width:900px">
+        <h2 style="width:400px">
     
 
         {{item}}
@@ -61,7 +61,7 @@ export default {
     }
   },
   mounted() {
-    this.end = this.start + this.visibleCount
+    this.end = this.start + 10
   },
   data() {
     return {
@@ -72,14 +72,15 @@ export default {
       //起始索引
       start:0,
       //结束索引
-      end:4,
+      end:10,
     };
   },
   methods: {
     scrollEvent() {
       let scrollTop = this.$refs.list.scrollTop
+      
       this.start = Math.floor(scrollTop/this.size)
-      this.end = this.start + this.visibleCount
+      this.end = this.start + 10
 
       this.startOffset = scrollTop - (scrollTop%this.size)
     }
