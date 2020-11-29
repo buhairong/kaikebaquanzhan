@@ -5,7 +5,8 @@
 var permute = function(nums) {
   let list = []
 
-  function backtrack(level,list, temp) {
+  function backtrack(level,list, temp, j) {
+    console.log('backtrack'+level,list, temp, j)
     if(temp.length === nums.length) {
       return list.push([...temp])
     }
@@ -15,12 +16,13 @@ var permute = function(nums) {
         continue
       }
       temp.push(nums[i])
-      backtrack(level+1,list, temp)
+      backtrack(level+1,list, temp, i+1)
+      console.log('for:'+level,temp)
       temp.pop()      
     }
   }
 
-  backtrack(1, list, [])
+  backtrack(1, list, [], 0)
 
   return list
 };
