@@ -13,7 +13,7 @@ var subsets = function(nums) {
 
         for (let i = index; i < nums.length; i++) {
             temp.push(nums[i])
-            console.log(temp, list)
+            
             list.push([...temp])
             
             find(i+1, temp)

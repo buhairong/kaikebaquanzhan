@@ -27,7 +27,7 @@ var maxArea = function(height) {
   while(left < right) {
     const leftNum = height[left]
     const rightNum = height[right]
-    const cur = (right-left)*Math.min(leftNum, rightNum)
+    const cur = Math.abs(right-left)*Math.min(leftNum, rightNum)
     max = Math.max(max, cur)
     if(leftNum < rightNum) {
       left++
